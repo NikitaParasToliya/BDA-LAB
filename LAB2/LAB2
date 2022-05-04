@@ -1,0 +1,31 @@
+1 Create a key space by name Library
+CREATE KEYSPACE LIBRARY1 WITH replication = {'class' : 'SimpleStrategy','replication_factor' : 3};
+
+use library1;
+
+2. Create a column family by name Library-Info with attributes Stud_Id Primary Key,Counter_value of type Counter,
+Stud_Name, Book-Name, Book-Id, Date_of_issue
+CREATE TABLE LIBRARY_INFO(STUD_ID INT,COUNTER_VALUE COUNTER,STUD_NAME TEXT,BOOK_NAME TEXT,BOOK_ID INT,DATE_OF_ISSUE TIMESTAMP,PRIMARY KEY(STUD_ID,STUD_NAME,BOOK_NAME,BOOK_ID,DATE_OF_ISSUE));
+
+3Insert the values into the table in batch
+UPDATE LIBRARY_INFO SET COUNTER_VALUE = COUNTER_VALUE + 1 WHERE STUD_ID = 111 AND STUD_NAME = 'NIKITA'AND BOOK_NAME = 'ADA' AND DATE_OF_ISSUE = '2022-05-04' AND BOOK_ID= 500;
+UPDATE LIBRARY_INFO SET COUNTER_VALUE = COUNTER_VALUE + 1 WHERE STUD_ID = 112 AND STUD_NAME = 'NEHA' AND BOOK_NAME = 'BDA' AND DATE_OF_ISSUE = '2022-06-04' AND BOOK_ID= 501;
+UPDATE LIBRARY_INFO SET COUNTER_VALUE = COUNTER_VALUE + 1 WHERE STUD_ID = 112 AND STUD_NAME = 'NEHA' AND BOOK_NAME = 'BDA' AND DATE_OF_ISSUE = '2022-06-04' AND BOOK_ID= 501;
+UPDATE LIBRARY_INFO SET COUNTER_VALUE = COUNTER_VALUE + 1 WHERE STUD_ID = 113 AND STUD_NAME = 'KRISHA' AND BOOK_NAME = 'ADA' AND DATE_OF_ISSUE = '2022-07-04' AND BOOK_ID= 502;
+UPDATE LIBRARY_INFO SET COUNTER_VALUE = COUNTER_VALUE + 1 WHERE STUD_ID = 115 AND STUD_NAME = 'RIYA' AND BOOK_NAME = 'CNS' AND DATE_OF_ISSUE = '2022-08-04' AND BOOK_ID= 504;
+UPDATE LIBRARY_INFO SET COUNTER_VALUE = COUNTER_VALUE + 1 WHERE STUD_ID = 114 AND STUD_NAME = 'RIYA' AND BOOK_NAME = 'ADA' AND DATE_OF_ISSUE = '2022-09-04' AND BOOK_ID= 505;
+
+4. Display the details of the table created and increase the value of the counter
+SELECT* FROM LIBRARY_INFO;
+
+5. Write a query to show that a student with id 112 has taken a book “BDA” 2 times.
+SELECT* FROM LIBRARY_INFO WHERE STUD_ID=112;
+
+6. Export the created column to a csv file
+COPY Library_Info(Stud_Id,Stud_Name,Book_Name,Book_Id,Date_Of_Issue,Counter_value) TO 'C:\libraryInfo.csv';
+
+
+7. Import a given csv dataset from local file system into Cassandra column family
+create table library_info2(stud_id int, counter_value Counter, stud_name text,book_name text, date_of_issue timestamp, book_id int, PRIMARY KEY(stud_id,stud_name,book_name,date_of_issue,book_id));
+
+COPY library_info2(stud_id,stud_name,book_name,book_id,date_of_issue,counter_value) FROM 'C:\libraryInfo.csv';
